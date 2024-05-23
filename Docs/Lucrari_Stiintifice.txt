@@ -1,0 +1,5 @@
+https://ieeexplore.ieee.org/document/9357008 - 64.56% (nu se descrie modelul retelei)
+https://ieeexplore.ieee.org/abstract/document/7477450 - 66.4% (inception based model)
+                                                      - 61% (AlexNet model)
+https://arxiv.org/pdf/1612.02903 - state of the art for CNNs
+

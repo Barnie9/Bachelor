@@ -4,8 +4,8 @@
 # Ignore the datasets folder, for the moment
 Datasets
 
-# Ignore the test results folder
-Test_Results
+# Ignore the results folder
+Results
 
 # Ignore the shape predictor file
 Code/shape_predictor_68_face_landmarks.dat
