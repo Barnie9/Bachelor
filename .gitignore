@@ -8,4 +8,4 @@ Datasets
 Results
 
 # Ignore the shape predictor file
-Code/shape_predictor_68_face_landmarks.dat
+Utils/shape_predictor_68_face_landmarks.dat

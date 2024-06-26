@@ -1,0 +1,51 @@
+:root {
+	--font-family: sans-serif;
+
+	--anger: #ff6663;
+	--fear: #feb144;
+	--happiness: #fffa62;
+	--disgust: #7dd87d;
+	--neutral: #93deff;
+	--sadness: #a9bcff;
+	--surprise: #cdabeb;
+
+	--positive-category: #2eb872;
+	--neutral-category: #fbb040;
+	--negative-category: #dc2f2f;
+
+	--anger-level: #dc1e20;
+	--fear-level: #ff6d30;
+	--happiness-level: #ffec42;
+	--disgust-level: #4cb63d;
+	--neutral-level: #35cded;
+	--sadness-level: #4d6ee6;
+	--surprise-level: #ba55ff;
+
+	--white: #ffffff;
+	--light-gray: #f0f0f0;
+	--gray: #808080;
+	--black: #41424c;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: var(--font-family);
+}
+
+::-webkit-scrollbar {
+	display: none;
+	width: 3px;
+	height: 3px;
+}
+
+::-webkit-scrollbar-track {
+	display: none;
+	background: var(--white);
+}
+
+::-webkit-scrollbar-thumb {
+	display: none;
+	background: var(--gray);
+	border-radius: 5px;
+}
