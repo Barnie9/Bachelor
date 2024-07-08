@@ -20,7 +20,7 @@ public class EmotionPercentageService : IEmotionPercentageService
         var results = await _resultRepository.GetResultsByEmployeeIdAsync(employeeId);
         if (!results.Any())
         {
-            return new List<EmotionPercentageDto>();
+            return Generator.GenerateEmotionPercentages(new List<Result>());
         }
 
         results = Filter.FilterResultsByTimeRange(results, timeRangeDto);
@@ -33,7 +33,7 @@ public class EmotionPercentageService : IEmotionPercentageService
         var employees = await _employeeRepository.GetEmployeesByTeamIdAsync(teamId);
         if (!employees.Any())
         {
-            return new List<EmotionPercentageDto>();
+            return Generator.GenerateEmotionPercentages(new List<Result>());
         }
 
         var allResults = new List<IEnumerable<Result>>();
@@ -45,7 +45,7 @@ public class EmotionPercentageService : IEmotionPercentageService
         var results = allResults.SelectMany(r => r);
         if (!results.Any())
         {
-            return new List<EmotionPercentageDto>();
+            return Generator.GenerateEmotionPercentages(new List<Result>());
         }
 
         results = Filter.FilterResultsByTimeRange(results, timeRangeDto);
@@ -58,7 +58,7 @@ public class EmotionPercentageService : IEmotionPercentageService
         var team = await _teamRepository.GetTeamByManagerIdAsync(managerId);
         if (team == null)
         {
-            return new List<EmotionPercentageDto>();
+            return Generator.GenerateEmotionPercentages(new List<Result>());
         }
 
         return await GetEmotionPercentagesForTeam(team.Id, timeRangeDto);

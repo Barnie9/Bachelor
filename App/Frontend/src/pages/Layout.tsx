@@ -29,7 +29,11 @@ import { useDispatch } from "react-redux";
 import { setEmotionPercentages } from "../redux/slices/emotionPercentageSlice";
 import { setEmotionCategories } from "../redux/slices/emotionCategorySlice";
 import { ViewType } from "../utils/types";
-import { getMonthBounds, getThreeMonthsBounds, getWeekBounds } from "../utils/functions";
+import {
+	getMonthBounds,
+	getThreeMonthsBounds,
+	getWeekBounds,
+} from "../utils/functions";
 import { setEmotionDayLevels } from "../redux/slices/emotionDayLevelSlice";
 
 export const Layout = () => {
@@ -120,9 +124,11 @@ export const Layout = () => {
 	] = useGetEmotionDayLevelsByManagerIdMutation();
 
 	useEffect(() => {
-		const { startOfThreeMonths, endOfThreeMonths } = getThreeMonthsBounds(currentDay!);
+		const { startOfThreeMonths, endOfThreeMonths } = getThreeMonthsBounds(
+			currentDay!
+		);
 
-		if (currentEmployeeId) {
+		if (currentEmployeeId != null) {
 			getEmotionPercentagesByEmployeeId({
 				employeeId: currentEmployeeId,
 				timeRange: {
@@ -145,9 +151,7 @@ export const Layout = () => {
 					endDate: endOfThreeMonths.toDate(),
 				},
 			});
-		}
-
-		if (currentTeamId) {
+		} else if (currentTeamId != null) {
 			getEmotionPercentagesByTeamId({
 				teamId: currentTeamId,
 				timeRange: {
@@ -170,9 +174,7 @@ export const Layout = () => {
 					endDate: endOfThreeMonths.toDate(),
 				},
 			});
-		}
-
-		if (currentManagerId) {
+		} else if (currentManagerId != null) {
 			getEmotionPercentagesByManagerId({
 				managerId: currentManagerId,
 				timeRange: {
@@ -207,34 +209,36 @@ export const Layout = () => {
 	]);
 
 	useEffect(() => {
-		if (isEmotionPercentagesByEmployeeIdSuccess) {
-			dispatch(setEmotionPercentages(emotionPercentagesByEmployeeId));
-		}
-		if (isEmotionPercentagesByTeamIdSuccess) {
-			dispatch(setEmotionPercentages(emotionPercentagesByTeamId));
-		}
-		if (isEmotionPercentagesByManagerIdSuccess) {
-			dispatch(setEmotionPercentages(emotionPercentagesByManagerId));
-		}
-
-		if (isEmotionCategoriesByEmployeeIdSuccess) {
-			dispatch(setEmotionCategories(emotionCategoriesByEmployeeId))
-		}
-		if (isEmotionCategoriesByTeamIdSuccess) {
-			dispatch(setEmotionCategories(emotionCategoriesByTeamId))
-		}
-		if (isEmotionCategoriesByManagerIdSuccess) {
-			dispatch(setEmotionCategories(emotionCategoriesByManagerId))
-		}
-
-		if (isEmotionDayLevelsByEmployeeIdSuccess) {
-			dispatch(setEmotionDayLevels(emotionDayLevelsByEmployeeId));
-		}
-		if (isEmotionDayLevelsByTeamIdSuccess) {
-			dispatch(setEmotionDayLevels(emotionDayLevelsByTeamId));
-		}
-		if (isEmotionDayLevelsByManagerIdSuccess) {
-			dispatch(setEmotionDayLevels(emotionDayLevelsByManagerId));
+		if (currentEmployeeId != null) {
+			if (isEmotionPercentagesByEmployeeIdSuccess) {
+				dispatch(setEmotionPercentages(emotionPercentagesByEmployeeId));
+			}
+			if (isEmotionCategoriesByEmployeeIdSuccess) {
+				dispatch(setEmotionCategories(emotionCategoriesByEmployeeId));
+			}
+			if (isEmotionDayLevelsByEmployeeIdSuccess) {
+				dispatch(setEmotionDayLevels(emotionDayLevelsByEmployeeId));
+			}
+		} else if (currentTeamId != null) {
+			if (isEmotionPercentagesByTeamIdSuccess) {
+				dispatch(setEmotionPercentages(emotionPercentagesByTeamId));
+			}
+			if (isEmotionCategoriesByTeamIdSuccess) {
+				dispatch(setEmotionCategories(emotionCategoriesByTeamId));
+			}
+			if (isEmotionDayLevelsByTeamIdSuccess) {
+				dispatch(setEmotionDayLevels(emotionDayLevelsByTeamId));
+			}
+		} else if (currentManagerId != null) {
+			if (isEmotionPercentagesByManagerIdSuccess) {
+				dispatch(setEmotionPercentages(emotionPercentagesByManagerId));
+			}
+			if (isEmotionCategoriesByManagerIdSuccess) {
+				dispatch(setEmotionCategories(emotionCategoriesByManagerId));
+			}
+			if (isEmotionDayLevelsByManagerIdSuccess) {
+				dispatch(setEmotionDayLevels(emotionDayLevelsByManagerId));
+			}
 		}
 	}, [
 		isEmotionPercentagesByEmployeeIdSuccess,
@@ -252,14 +256,12 @@ export const Layout = () => {
 		if (currentViewType === ViewType.Day) {
 			dispatch(setCurrentStartDate(currentDay!.toDate()));
 			dispatch(setCurrentEndDate(currentDay!.toDate()));
-		}
-		if (currentViewType === ViewType.Week) {
+		} else if (currentViewType === ViewType.Week) {
 			const { startOfWeek, endOfWeek } = getWeekBounds(currentDay!);
 
 			dispatch(setCurrentStartDate(startOfWeek.toDate()));
 			dispatch(setCurrentEndDate(endOfWeek.toDate()));
-		}
-		if (currentViewType === ViewType.Month) {
+		} else if (currentViewType === ViewType.Month) {
 			const { startOfMonth, endOfMonth } = getMonthBounds(currentDay!);
 
 			dispatch(setCurrentStartDate(startOfMonth.toDate()));

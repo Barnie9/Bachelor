@@ -20,7 +20,7 @@ public class EmotionDayLevelService : IEmotionDayLevelService
         var results = await _resultRepository.GetResultsByEmployeeIdAsync(employeeId);
         if (!results.Any())
         {
-            return new List<EmotionDayLevelDto>();
+            return Generator.GenerateEmotionDayLevels(new List<Result>(), timeRangeDto);
         }
 
         results = Filter.FilterResultsByTimeRangeAndEmotionName(results, timeRangeDto, emotionName);
@@ -33,7 +33,7 @@ public class EmotionDayLevelService : IEmotionDayLevelService
         var employees = await _employeeRepository.GetEmployeesByTeamIdAsync(teamId);
         if (!employees.Any())
         {
-            return new List<EmotionDayLevelDto>();
+            return Generator.GenerateEmotionDayLevels(new List<Result>(), timeRangeDto);
         }
 
         var allResults = new List<IEnumerable<Result>>();
@@ -45,7 +45,7 @@ public class EmotionDayLevelService : IEmotionDayLevelService
         var results = allResults.SelectMany(r => r);
         if (!results.Any())
         {
-            return new List<EmotionDayLevelDto>();
+            return Generator.GenerateEmotionDayLevels(new List<Result>(), timeRangeDto);
         }
 
         results = Filter.FilterResultsByTimeRangeAndEmotionName(results, timeRangeDto, emotionName);
@@ -58,7 +58,7 @@ public class EmotionDayLevelService : IEmotionDayLevelService
         var team = await _teamRepository.GetTeamByManagerIdAsync(managerId);
         if (team == null)
         {
-            return new List<EmotionDayLevelDto>();
+            return Generator.GenerateEmotionDayLevels(new List<Result>(), timeRangeDto);
         }
 
         return await GetEmotionDayLevelsForTeam(emotionName, team.Id, timeRangeDto);

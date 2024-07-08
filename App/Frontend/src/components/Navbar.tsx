@@ -1,13 +1,14 @@
 import { IconLogout } from "@tabler/icons-react";
 import { IconButton } from "./IconButton";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { selectCurrentDay, setCurrentEmployeeId, setCurrentManagerId, setCurrentTeamId } from "../redux/slices/globalState";
+import { selectCurrentDay, selectCurrentViewType, setCurrentEmployeeId, setCurrentManagerId, setCurrentTeamId, setCurrentViewType } from "../redux/slices/globalState";
 import { DatePicker } from "@mui/x-date-pickers";
 import { setCurrentDay } from "../redux/slices/globalState";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
 import { clearUser, selectUser } from "../redux/slices/userSlice";
 import { useMsal } from "@azure/msal-react";
+import { ViewType } from "../utils/types";
 
 export const Navbar = () => {
 	const navigate = useNavigate();
@@ -15,6 +16,7 @@ export const Navbar = () => {
 	const dispatch = useAppDispatch();
 
 	const currentDay = useAppSelector(selectCurrentDay);
+	const currentViewType = useAppSelector(selectCurrentViewType);
 
 	const user = useAppSelector(selectUser);
 
@@ -29,6 +31,16 @@ export const Navbar = () => {
 
 		instance.logoutPopup();
 	};
+
+	const onTimeRangeClick = () => {
+		if (currentViewType === ViewType.Day) {
+			dispatch(setCurrentViewType(ViewType.Week));
+		} else if (currentViewType === ViewType.Week) {
+			dispatch(setCurrentViewType(ViewType.Month));
+		} else if (currentViewType === ViewType.Month) {
+			dispatch(setCurrentViewType(ViewType.Day));
+		}
+	}
 
 	return (
 		<div
@@ -88,11 +100,11 @@ export const Navbar = () => {
 				/>
 
 				<Button
-					text={"Day"}
+					text={currentViewType === ViewType.Day ? "Day" : currentViewType === ViewType.Week ? "Week" : "Month"}
 					textColor={"--black"}
 					backgroundColor={"--white"}
 					hoverBackgroundColor={"--light-gray"}
-					onClick={() => {}}
+					onClick={onTimeRangeClick}
 				/>
 			</div>
 

@@ -30,6 +30,8 @@ public class PredictorService : IPredictorService
             return false;
         }
 
+        Console.WriteLine($"Predicted emotion for {employee.Username}: {emotion.Name}");
+
         var result = new Result
         {
             Employee = employee,

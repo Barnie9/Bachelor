@@ -36,19 +36,21 @@ export const Teams = () => {
 							gap: "20px",
 							height: "300px",
 							width: "200px",
-							padding: "20px",
+							padding: "20px 0",
 							borderRadius: "10px",
 							boxShadow: "0px 0px 10px 0px var(--gray)",
 						}}
-						onClick={() => onTeamClick(team.id)}
 					>
 						<div
 							style={{
-								width: "100%",
+								width: "calc(100% - 40px)",
 								height: "40px",
 								color: "var(--black)",
 								fontSize: "24px",
+								padding: "0 20px",
+								cursor: "pointer",
 							}}
+							onClick={() => onTeamClick(team.id)}
 						>
 							{team.name}
 						</div>
@@ -64,13 +66,17 @@ export const Teams = () => {
 								<div
 									key={employee.id}
 									style={{
-										width: "100%",
+										width: "calc(100% - 40px)",
 										minHeight: "40px",
+										display: "flex",
+										alignItems: "center",
 										color: "var(--black)",
 										fontSize: "16px",
+										padding: "0 20px",
 										cursor: "pointer",
+										backgroundColor: "var(--light-gray)",
 									}}
-									onAbort={() => onEmployeeClick(employee.id)}
+									onClick={() => onEmployeeClick(employee.id)}
 								>
 									{employee.username}
 								</div>

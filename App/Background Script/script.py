@@ -5,8 +5,11 @@ import requests
 import json
 from datetime import datetime
 
+import threading
 
-time_interval = 5 * 60
+
+# time_interval = 5 * 60
+time_interval = 5
 
 
 url = 'http://localhost:5175/api/Predictor'
@@ -51,11 +54,12 @@ def send_request(username, timestamp, image_pixels):
     else:
         print("Failed to send request.")
 
+cap = cv2.VideoCapture(0)
 
 def main():
     current_username = os.getlogin()
 
-    cap = cv2.VideoCapture(0)
+    # cap = cv2.VideoCapture(0)
 
     if not cap.isOpened():
         print("Error: Could not open camera.")
@@ -87,7 +91,34 @@ def main():
     finally:
         cap.release()
         cv2.destroyAllWindows()
+        
+def show_camera():
+    # cap = cv2.VideoCapture(0)
+
+    if not cap.isOpened():
+        print("Error: Could not open camera.")
+        return
+
+    try:
+        while True:
+            ret, frame = cap.read()
+
+            if not ret:
+                continue
+
+            cv2.imshow("Camera", frame)
+
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
+    finally:
+        cap.release()
+        cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
-    main()
+    main_thread = threading.Thread(target=main)
+    main_thread.start()
+    
+    thread = threading.Thread(target=show_camera)
+    thread.start()

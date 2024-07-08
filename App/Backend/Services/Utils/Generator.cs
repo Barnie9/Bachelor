@@ -22,7 +22,7 @@ public class Generator
             var emotionPercentage = new EmotionPercentageDto
             {
                 Name = EmotionNames[i],
-                Percentage = (long)Math.Round((double) emotionCount / totalEmotionCount * 100)
+                Percentage = (long)Math.Round((double) emotionCount / totalEmotionCount * 100) < 0 ? 0 : (long)Math.Round((double) emotionCount / totalEmotionCount * 100)
             };
 
             emotionPercentages.Add(emotionPercentage);
@@ -44,17 +44,17 @@ public class Generator
         var positiveEmotionCategory = new EmotionCategoryDto
         {
             Name = "Positive",
-            Percentage = (long)Math.Round((double) positiveEmotionCount / totalEmotionCount * 100)
+            Percentage = (long)Math.Round((double) positiveEmotionCount / totalEmotionCount * 100) < 0 ? 0 : (long)Math.Round((double) positiveEmotionCount / totalEmotionCount * 100)
         };
         var neutralEmotionCategory = new EmotionCategoryDto
         {
             Name = "Neutral",
-            Percentage = (long)Math.Round((double) neutralEmotionCount / totalEmotionCount * 100)
+            Percentage = (long)Math.Round((double) neutralEmotionCount / totalEmotionCount * 100) < 0 ? 0 : (long)Math.Round((double) neutralEmotionCount / totalEmotionCount * 100)
         };
         var negativeEmotionCategory = new EmotionCategoryDto
         {
             Name = "Negative",
-            Percentage = (long)Math.Round((double) negativeEmotionCount / totalEmotionCount * 100)
+            Percentage = (long)Math.Round((double) negativeEmotionCount / totalEmotionCount * 100) < 0 ? 0 : (long)Math.Round((double) negativeEmotionCount / totalEmotionCount * 100)
         };
 
         emotionCategories.Add(positiveEmotionCategory);
@@ -68,15 +68,27 @@ public class Generator
     {
         var emotionDayLevels = new List<EmotionDayLevelDto>();
 
+        var startDate = timeRangeDto.StartDate.Date;
+        var endDate = timeRangeDto.EndDate.Date;
+
         var groupedResults = results.GroupBy(r => r.Timestamp.Date);
         if (!groupedResults.Any())
         {
+            for (var date = startDate; date < endDate; date = date.AddDays(1))
+            {
+                var emotionDayLevel = new EmotionDayLevelDto
+                {
+                    Date = date,
+                    Level = 0
+                };
+
+                emotionDayLevels.Add(emotionDayLevel);
+            }
+
             return emotionDayLevels;
         }
         var maxEmotions = groupedResults.Max(g => g.Count());
 
-        var startDate = timeRangeDto.StartDate.Date;
-        var endDate = timeRangeDto.EndDate.Date;
         if (startDate == endDate)
         {
             var group = results.Where(r => r.Timestamp.Date == startDate);

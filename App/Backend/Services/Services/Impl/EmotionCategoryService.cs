@@ -20,7 +20,7 @@ public class EmotionCategoryService : IEmotionCategoryService
         var results = await _resultRepository.GetResultsByEmployeeIdAsync(employeeId);
         if (!results.Any())
         {
-            return new List<EmotionCategoryDto>();
+            return Generator.GenerateEmotionCategories(new List<Result>());
         }
 
         results = Filter.FilterResultsByTimeRange(results, timeRangeDto);
@@ -33,7 +33,7 @@ public class EmotionCategoryService : IEmotionCategoryService
         var employees = await _employeeRepository.GetEmployeesByTeamIdAsync(teamId);
         if (!employees.Any())
         {
-            return new List<EmotionCategoryDto>();
+            return Generator.GenerateEmotionCategories(new List<Result>());
         }
 
         var allResults = new List<IEnumerable<Result>>();
@@ -45,7 +45,7 @@ public class EmotionCategoryService : IEmotionCategoryService
         var results = allResults.SelectMany(r => r);
         if (!results.Any())
         {
-            return new List<EmotionCategoryDto>();
+            return Generator.GenerateEmotionCategories(new List<Result>());
         }
 
         results = Filter.FilterResultsByTimeRange(results, timeRangeDto);
@@ -58,7 +58,7 @@ public class EmotionCategoryService : IEmotionCategoryService
         var team = await _teamRepository.GetTeamByManagerIdAsync(managerId);
         if (team == null)
         {
-            return new List<EmotionCategoryDto>();
+            return Generator.GenerateEmotionCategories(new List<Result>());
         }
 
         return await GetEmotionCategoriesForTeam(team.Id, timeRangeDto);
